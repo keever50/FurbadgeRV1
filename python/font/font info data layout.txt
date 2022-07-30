@@ -1,0 +1,6 @@
+addr	SIZE	DESC
+0	byte	charsize x
+1	byte	charsize y
+2	byte	sheetres x
+3	byte	sheetres y
+4	byte	ascii table offset(usually 32)
