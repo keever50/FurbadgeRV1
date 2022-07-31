@@ -50,7 +50,7 @@ def show(array):
     for y in range(32):
         for x in range(128):
             p = array[(y*128)+x]
-            if p > 0:
+            if p == True:
                 oled.pixel(x,y,0)
             else:
                 oled.pixel(x,y,1)

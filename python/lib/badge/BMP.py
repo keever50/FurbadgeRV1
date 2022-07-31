@@ -37,9 +37,14 @@ class bitmap:
         
         for y in range(height):
             for x in range(rowsize):
-                array.append(self.pixel_array.index_array[((height-y-1)*rowsize)+x])
-            
-        
+                colorindex = self.pixel_array.index_array[((height-y-1)*rowsize)+x]
+                RGBA = self.color_palette.palette[colorindex]
+                T = RGBA[0]+RGBA[1]+RGBA[2]
+                if T > 128:
+                    array.append(True)
+                else:
+                    array.append(False)
+                
         return array
                 
 class bitmap_header:

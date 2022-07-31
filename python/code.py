@@ -38,10 +38,15 @@ for x in range(3):
     badge.LEDs.HB.value = False
 
 #test
-bmp = BMP.bitmap("images/Eyes.bmp")    
-image = bmp.generate1bit_array()
-badge.OLED.show(image)
 
+while True:
+    dirs = os.listdir("images")
+    for file in dirs:
+        bmp = BMP.bitmap("images/" + file)    
+        image = bmp.generate1bit_array()
+        badge.OLED.show(image)
+        #time.sleep(0.1)
+        
 #hold
 while True:
     time.sleep(1)
