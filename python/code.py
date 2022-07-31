@@ -1,4 +1,3 @@
-
 #Importing
 import board
 import busio
@@ -33,7 +32,7 @@ else:
         
   
 
-
+# :)
 
 
 #Everything ok
