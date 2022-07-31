@@ -9,6 +9,7 @@ import analogio
 
 ##INIT##
 import badge
+from badge import BMP
 
 #Battery check
 BATV_PIN = analogio.AnalogIn(board.GP26)
@@ -35,6 +36,11 @@ for x in range(3):
     time.sleep(0.1)
     badge.LEDs.BUSY.value = False
     badge.LEDs.HB.value = False
+
+#test
+bmp = BMP.bitmap("images/Eyes.bmp")    
+image = bmp.generate1bit_array()
+badge.OLED.show(image)
 
 #hold
 while True:

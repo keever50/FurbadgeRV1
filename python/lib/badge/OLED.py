@@ -23,13 +23,13 @@ def Test():
         for X in range(128):
             oled.pixel(X,Y,Y%2)
     oled.show()
-    time.sleep(0.5)
+    time.sleep(0.1)
     #Vertical lines!
     for Y in range(32):
         for X in range(128):
             oled.pixel(X,Y,X%2)
     oled.show()
-    time.sleep(0.5)
+    time.sleep(0.1)
     #Clearing it all!
     for Y in range(32):
         for X in range(128):
@@ -40,12 +40,20 @@ def Test():
 def Power(state):
     if state == True:
         Booster.value = True
-        time.sleep(0.5) #To stabilize 
+        time.sleep(0.1) #To stabilize 
     else:
         oled.fill(1) #To discharge capacitors
-        time.sleep(0.5)
+        time.sleep(0.2)
         Booster.value = False
         
-        
+def show(array):
+    for y in range(32):
+        for x in range(128):
+            p = array[(y*128)+x]
+            if p > 0:
+                oled.pixel(x,y,0)
+            else:
+                oled.pixel(x,y,1)
+    oled.show()
     
     
