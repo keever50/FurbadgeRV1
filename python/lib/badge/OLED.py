@@ -21,19 +21,17 @@ def Test():
     #Horizontal lines!
     for Y in range(32):
         for X in range(128):
-            oled.pixel(X,Y,Y%2)
+            oled.pixelf(X,Y,Y%2)
     oled.show()
-    time.sleep(0.1)
     #Vertical lines!
     for Y in range(32):
         for X in range(128):
-            oled.pixel(X,Y,X%2)
+            oled.pixelf(X,Y,X%2)
     oled.show()
-    time.sleep(0.1)
     #Clearing it all!
     for Y in range(32):
         for X in range(128):
-            oled.pixel(X,Y,0)
+            oled.pixelf(X,Y,0)
     oled.show()
     #Hoping it passed because i can't see it!
 
@@ -51,9 +49,62 @@ def show(array):
         for x in range(128):
             p = array[(y*128)+x]
             if p == True:
-                oled.pixel(x,y,0)
+                oled.pixelf(x,y,False)
             else:
-                oled.pixel(x,y,1)
+                oled.pixelf(x,y,True)
+    oled.show()
+
+def showf(array):
+    for Y in range(32):
+        ystride = (Y >> 3) * 128 
+        offset = Y & 0x07
+        T = ~(0x01 << offset)
+        for X in range(128):
+            color = array[(Y*128)+X]
+            index = ystride + X
+            oled.buf[index] = ( oled.buf[index] & T ) | ( color << offset )
     oled.show()
     
+def bench():
+    oled_spi.try_lock()
+    oled_spi.configure(baudrate=8000000)
+    oled_spi.unlock()
+    print("SPI frequency")
+    print(oled_spi.frequency)
     
+    Power(True)
+    
+    #OLED TEST#
+    time.sleep(1)
+    #FILL TEST
+    timefirst = time.monotonic()
+
+    #index = (y >> 3) * self.stride + x
+    #offset = y & 0x07
+    
+    ##Extremely fast pixel write##
+    Color = True
+    for Y in range(32):
+        ystride = (Y >> 3) * 128 
+        offset = Y & 0x07
+        T = ~(0x01 << offset)
+        for X in range(128):
+            index = ystride + X
+            oled.buf[index] = ( oled.buf[index] & T ) | ( Color << offset ) 
+    oled.show()
+
+    delay = time.monotonic() - timefirst        
+    print("Screenfill delay in ms")
+    print(delay*1000)    
+    
+    
+    ##
+    
+    #Clearing it all!
+    oled.fill(0)
+    oled.show()
+    
+        
+    
+bench()
+

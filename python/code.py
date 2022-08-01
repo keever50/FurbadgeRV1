@@ -42,10 +42,29 @@ for x in range(3):
 while True:
     dirs = os.listdir("images")
     for file in dirs:
-        bmp = BMP.bitmap("images/" + file)    
+        print("BENCH")
+        #Load
+        timefirst = time.monotonic()
+        bmp = BMP.bitmap("images/" + file)
+        delay = time.monotonic() - timefirst        
+        print("Image load delay in ms")
+        print(delay*1000)          
+        
+        #Generate
+        timefirst = time.monotonic()
         image = bmp.generate1bit_array()
-        badge.OLED.show(image)
-        #time.sleep(0.1)
+        delay = time.monotonic() - timefirst        
+        print("Image generation delay in ms")
+        print(delay*1000)
+        
+        #Draw
+        timefirst = time.monotonic()
+        badge.OLED.showf(image)
+        delay = time.monotonic() - timefirst        
+        print("Image draw delay in ms")
+        print(delay*1000)           
+        
+        time.sleep(5)
         
 #hold
 while True:

@@ -248,6 +248,21 @@ class FrameBuffer:
         self.format.set_pixel(self, x, y, color)
         return None
 
+    #Modified for badge. Pixel but fast. Color is now true/false
+    def pixelf(self, x, y, color):
+        index = (y >> 3) * self.stride + x
+        offset = y & 0x07
+        self.buf[index] = (self.buf[index] & ~(0x01 << offset)) | ( color << offset )      
+        return None
+
+    #Modified for badge. Pixel but extra fast. Color is now true/false. index and offset are precalculated
+    def pixelef(self, x, index, offset, color):
+        #index = (y >> 3) * self.stride + x
+        #offset = y & 0x07
+        
+        self.buf[index] = (self.buf[index] & ~(0x01 << offset)) | ( color << offset )      
+        return None
+
     def hline(self, x, y, width, color):
         """Draw a horizontal line up to a given length."""
         self.rect(x, y, width, 1, color, fill=True)
