@@ -38,8 +38,9 @@ for x in range(3):
     badge.LEDs.HB.value = False
 
 #test
-
-while True:
+testid = 0
+testframes = 4
+while testid<=testframes:
     dirs = os.listdir("images")
     for file in dirs:
         print("BENCH")
@@ -57,15 +58,29 @@ while True:
         print("Image generation delay in ms")
         print(delay*1000)
         
-        #Draw
+        #Store frame
         timefirst = time.monotonic()
-        badge.OLED.showf(image)
+        badge.OLED.store_frame(image, 0)
         delay = time.monotonic() - timefirst        
-        print("Image draw delay in ms")
+        print("Frame storing delay in ms")
         print(delay*1000)           
+
+        #Show frame
+        timefirst = time.monotonic()
+        badge.OLED.show_frame(testid)
+        delay = time.monotonic() - timefirst        
+        print("Frame drawing delay in ms")
+        print(delay*1000)  
+        testid=testid+1
         
-        time.sleep(5)
-        
+        time.sleep(0.1)
+
+testid = 0
+while True:
+    badge.OLED.show_frame(testid%3)
+    testid = testid + 1
+    time.sleep(1/30)
+    
 #hold
 while True:
     time.sleep(1)

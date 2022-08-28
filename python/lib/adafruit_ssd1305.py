@@ -182,7 +182,7 @@ class _SSD1305(framebuf.FrameBuffer):
         self.write_cmd(0)
         self.write_cmd(self.pages - 1)
         self.write_framebuf()
-
+        
 
 class SSD1305_I2C(_SSD1305):
     """

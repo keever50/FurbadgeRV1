@@ -44,7 +44,7 @@ def Power(state):
         time.sleep(0.2)
         Booster.value = False
         
-def show(array):
+def show_image(array):
     for y in range(32):
         for x in range(128):
             p = array[(y*128)+x]
@@ -54,7 +54,8 @@ def show(array):
                 oled.pixelf(x,y,True)
     oled.show()
 
-def showf(array):
+def showf_image(array):
+   
     for Y in range(32):
         ystride = (Y >> 3) * 128 
         offset = Y & 0x07
@@ -64,7 +65,40 @@ def showf(array):
             index = ystride + X
             oled.buf[index] = ( oled.buf[index] & T ) | ( color << offset )
     oled.show()
+
+#Handling quick frames
+frame_list = [] 
     
+def store_frame(array, ID):
+    #create new frame
+    frame = bytearray((32 // 8) * 128)
+    
+    for Y in range(32):
+        ystride = (Y >> 3) * 128 
+        offset = Y & 0x07
+        T = ~(0x01 << offset)
+        for X in range(128):
+            color = array[(Y*128)+X]
+            index = ystride + X
+            frame[index] = ( frame[index] & T ) | ( color << offset )
+    frame_list.append(frame) ##CHANGE THIS TO ID OR RETURN ID##
+
+def show_frame(ID):
+    """Update the display"""
+
+    oled.dc_pin.value = 0
+    with oled.spi_device as spi:
+        spi.write(bytearray(0x21))
+        spi.write(bytearray(4))
+        spi.write(bytearray(127 + 4))
+        spi.write(bytearray(0x22))
+        spi.write(bytearray(0))
+        spi.write(bytearray(3))
+        oled.dc_pin.value = 1
+        spi.write(frame_list[ID])
+
+
+
 def bench():
     oled_spi.try_lock()
     oled_spi.configure(baudrate=8000000)

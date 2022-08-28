@@ -41,9 +41,9 @@ class bitmap:
                 RGBA = self.color_palette.palette[colorindex]
                 T = RGBA[0]+RGBA[1]+RGBA[2]
                 if T > 128:
-                    array.append(True)
-                else:
                     array.append(False)
+                else:
+                    array.append(True)
                 
         return array
                 
