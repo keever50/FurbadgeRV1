@@ -1,2 +1,2 @@
 print("MENU")
-import badge
+exec(open("programs/imagetest.py").read())
