@@ -1,0 +1,2 @@
+print("MENU")
+import badge
