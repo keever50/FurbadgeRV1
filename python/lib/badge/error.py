@@ -26,4 +26,6 @@ def trap():
         IOInterface.HB.value = True
     
 def turnoff():
+    OLED.driver.fill(0)
+    OLED.driver.show()
     OLED.Power(False)      

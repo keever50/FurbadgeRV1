@@ -1,0 +1,22 @@
+type:name, ... functionname(type:name, ...)
+
+OLED Library for graphics
+The OLED library uses adafruit_ssd1305 and adafruit_framebuf (Both are modified for furbadgebadge RV1)
+
+OLED functions:
+
+#Functional#
+Test() tests the OLED. It shows 2 patterns to check if connection and hardware is ok. Horizontal lines and vertical lines after.
+Bench() a benchmark
+Power(bool:power) Turns 12V booster on/off safely
+
+#Images#
+show_image(bitarray:image) Shows an array of bits(bools atm) on the OLED 
+store_frame(bitarray:image, ID) Stores an array of bits to render later. This is really fast. (ID does nothing atm. Images are appended right now)
+show_frame(ID) Shows image from stored frames. This is really fast. From benchmark it shows ~2ms drawing time. 
+remove_frame(ID) To do  
+
+#Direct#
+driver. directly accesses the framebuf and SSD1305 driver 
+https://docs.circuitpython.org/projects/framebuf/en/latest/api.html?highlight=framebuf
+driver.pixelf(x,y,color) Modified framebuf.pixel(). It's faster.

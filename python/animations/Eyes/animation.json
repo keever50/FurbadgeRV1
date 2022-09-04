@@ -1,0 +1,39 @@
+{
+  
+  "animation" : 
+  {
+    "fps" : 10,
+    "loop" : true,
+	"bounce" : true,
+    "loop_duration" : 10,
+    "order" : 0
+  },
+ 
+  "frame_modifiers" :
+  {
+    "delays" :
+    {
+      "1.bmp" : 
+      {
+        "min_delay" : 4,
+        "max_delay" : 6
+      }
+    } 
+  },
+  
+  "effects" : 
+  {
+    "Breathing" : 
+    {
+      "Enabled" : true,
+      "Intensity" : 4,
+      "Speed" : 0.5
+    },
+    "Scrolling" :
+    {
+      "Enabled" : false,
+      "Speed" : 1
+    }
+  }
+  
+}

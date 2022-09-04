@@ -22,7 +22,13 @@ for x in range(3):
     IOInterface.HB.value = False
 
 #Run menu
-exec(open("programs/menu.py").read())
+while True:
+    exec(open("programs/menu.py").read())
+    OLED.driver.fill(0)
+    OLED.driver.text("Something went wrong",0,0,1)
+    OLED.driver.text("Restarting",0,7,1)
+    OLED.driver.show()
+    time.sleep(3)
 
 #trap
 error.trap()  

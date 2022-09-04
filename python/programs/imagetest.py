@@ -20,3 +20,4 @@ while True:
     for n in range(imageCount):
         OLED.show_frame(n-1)
         time.sleep(1)
+        battery.check()

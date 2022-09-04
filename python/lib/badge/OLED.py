@@ -11,7 +11,7 @@ oled_spi = busio.SPI(board.GP10, board.GP11)
 oled_cs = digitalio.DigitalInOut(board.GP9)
 oled_dc = digitalio.DigitalInOut(board.GP7)
 oled_res = digitalio.DigitalInOut(board.GP6)
-oled = adafruit_ssd1305.SSD1305_SPI(128, 32, oled_spi, oled_dc, oled_res, oled_cs)
+driver = adafruit_ssd1305.SSD1305_SPI(128, 32, oled_spi, oled_dc, oled_res, oled_cs)
 
 Booster = digitalio.DigitalInOut(board.GP24)
 Booster.direction = digitalio.Direction.OUTPUT  
@@ -21,18 +21,18 @@ def Test():
     #Horizontal lines!
     for Y in range(32):
         for X in range(128):
-            oled.pixelf(X,Y,Y%2)
-    oled.show()
+            driver.pixelf(X,Y,Y%2)
+    driver.show()
     #Vertical lines!
     for Y in range(32):
         for X in range(128):
-            oled.pixelf(X,Y,X%2)
-    oled.show()
+            driver.pixelf(X,Y,X%2)
+    driver.show()
     #Clearing it all!
     for Y in range(32):
         for X in range(128):
-            oled.pixelf(X,Y,0)
-    oled.show()
+            driver.pixelf(X,Y,0)
+    driver.show()
     #Hoping it passed because i can't see it!
 
 def Power(state):
@@ -40,21 +40,21 @@ def Power(state):
         Booster.value = True
         time.sleep(0.1) #To stabilize 
     else:
-        oled.fill(1) #To discharge capacitors
+        driver.fill(1) #To discharge capacitors
         time.sleep(0.2)
         Booster.value = False
         
-def show_image(array):
+def oldshow_image(array):
     for y in range(32):
         for x in range(128):
             p = array[(y*128)+x]
             if p == True:
-                oled.pixelf(x,y,False)
+                driver.pixelf(x,y,False)
             else:
-                oled.pixelf(x,y,True)
-    oled.show()
+                driver.pixelf(x,y,True)
+    driver.show()
 
-def showf_image(array):
+def show_image(array):
    
     for Y in range(32):
         ystride = (Y >> 3) * 128 
@@ -63,8 +63,8 @@ def showf_image(array):
         for X in range(128):
             color = array[(Y*128)+X]
             index = ystride + X
-            oled.buf[index] = ( oled.buf[index] & T ) | ( color << offset )
-    oled.show()
+            driver.buf[index] = ( driver.buf[index] & T ) | ( color << offset )
+    driver.show()
 
 #Handling quick frames
 frame_list = [] 
@@ -86,15 +86,15 @@ def store_frame(array, ID):
 def show_frame(ID):
     """Update the display"""
 
-    oled.dc_pin.value = 0
-    with oled.spi_device as spi:
+    driver.dc_pin.value = 0
+    with driver.spi_device as spi:
         spi.write(bytearray(0x21))
         spi.write(bytearray(4))
         spi.write(bytearray(127 + 4))
         spi.write(bytearray(0x22))
         spi.write(bytearray(0))
         spi.write(bytearray(3))
-        oled.dc_pin.value = 1
+        driver.dc_pin.value = 1
         spi.write(frame_list[ID])
 
 
@@ -124,8 +124,8 @@ def bench():
         T = ~(0x01 << offset)
         for X in range(128):
             index = ystride + X
-            oled.buf[index] = ( oled.buf[index] & T ) | ( Color << offset ) 
-    oled.show()
+            driver.buf[index] = ( driver.buf[index] & T ) | ( Color << offset ) 
+    driver.show()
 
     delay = time.monotonic() - timefirst        
     print("Screenfill delay in ms")
@@ -135,8 +135,8 @@ def bench():
     ##
     
     #Clearing it all!
-    oled.fill(0)
-    oled.show()
+    driver.fill(0)
+    driver.show()
     
         
     
